@@ -1,0 +1,2 @@
+# html-loader
+load html
