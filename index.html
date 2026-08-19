@@ -12,7 +12,7 @@
     }
     textarea {
       width: 100%;
-      height: 150px;
+      height: 200px;
       padding: 10px;
       box-sizing: border-box;
       border: 1px solid #ccc;
@@ -22,28 +22,19 @@
     }
     button {
       margin-top: 10px;
-      padding: 10px 20px;
+      padding: 12px 20px;
       background-color: #00c4cc; /* Canva-like Teal */
       color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
+      font-size: 16px;
       width: 100%;
+      transition: background 0.2s ease;
     }
     button:hover {
       background-color: #00a9b0;
-    }
-    #output-container {
-      margin-top: 15px;
-      display: none;
-    }
-    iframe {
-      width: 100%;
-      height: 400px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      background: #fff;
     }
   </style>
 </head>
@@ -51,30 +42,25 @@
 
   <h3>Paste HTML Code</h3>
   <textarea id="htmlInput" placeholder="<h1>Hello World</h1><p>Type your HTML here...</p>"></textarea>
-  <button onclick="generatePage()">Generate Page</button>
-
-  <div id="output-container">
-    <h3>Generated View:</h3>
-    <iframe id="outputFrame"></iframe>
-  </div>
+  <button onclick="generatePageInNewTab()">Generate Page in New Tab</button>
 
   <script>
-    function generatePage() {
+    function generatePageInNewTab() {
       const htmlContent = document.getElementById('htmlInput').value;
-      const container = document.getElementById('output-container');
-      const iframe = document.getElementById('outputFrame');
       
       if (!htmlContent.trim()) {
         alert('Please enter some HTML code first!');
         return;
       }
 
-      // Show container and render the code inside the iframe securely
-      container.style.display = 'block';
-      const doc = iframe.contentWindow.document;
-      doc.open();
-      doc.write(htmlContent);
-      doc.close();
+      // Convert the user's raw HTML string into a secure Blob object
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      
+      // Create a temporary unique local URL for that object blob
+      const pageUrl = URL.createObjectURL(blob);
+      
+      // Open the compiled local URL structure in a new browser tab window
+      window.open(pageUrl, '_blank');
     }
   </script>
 
